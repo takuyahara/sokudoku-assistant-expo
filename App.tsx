@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Swiper from 'react-native-swiper';
+import { useKeepAwake } from 'expo-keep-awake';
 
 import Top from './page/Top';
 import Count from './page/Count';
@@ -54,6 +55,8 @@ export default function App() {
   const resetSaved = () => {
     addPage(new Set());
   }
+
+  useKeepAwake();
   return (
     <MyContext.Provider value={addIndexChangedFunc}>
       <Swiper loop={false} showsPagination={false} onIndexChanged={onIndexChanged}>
