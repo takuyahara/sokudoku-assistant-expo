@@ -3,6 +3,7 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Vibration, StyleSheet, Text, View, TouchableHighlight, Dimensions, TouchableOpacity } from 'react-native';
 import MyContext from '../context/main';
 import CountContext from '../context/Count';
+import SaveContext from '../context/Save';
 import { INDEX_HORIZONTAL } from '../enum/Swiper';
 
 const STEP_TIME = 100;
@@ -78,6 +79,7 @@ export default function Count({ pageRange, time }) {
     isRunning.current = false;
   }
   const onSkip = () => {
+    Vibration.vibrate(0);
     progress.page.current = incr * 1000 / INTERVAL;
     refCircle.page.current.animate(100, 30);
     elapseBook();
@@ -99,6 +101,12 @@ export default function Count({ pageRange, time }) {
   }
   const addIndexChangedFunc = useContext(MyContext);
   const confChanged = useContext(CountContext);
+  const save = useContext(SaveContext);
+
+  const onSave = () => {
+    save(currentPage);
+  }
+
   useEffect(() => {
     addIndexChangedFunc(reset, (index) => {
       return index !== INDEX_HORIZONTAL.COUNT
@@ -121,7 +129,7 @@ export default function Count({ pageRange, time }) {
       <TouchableHighlight style={styles.skipButton} onPress={onSkip} underlayColor={"#00e0ff"}>
         <Text style={styles.textStyle}>Skip</Text>
       </TouchableHighlight>
-      <TouchableHighlight style={styles.saveButton}>
+      <TouchableHighlight style={styles.saveButton} onPress={onSave}>
         <Text style={styles.textStyle}>Save</Text>
       </TouchableHighlight>
       <View style={styles.counter}>
