@@ -21,7 +21,7 @@ export default function Top({ onConfigChange }) {
   const onBlur = (setter, defaultValue) => {
     return (e) => {
       const text = e.nativeEvent.text;
-      const newText = text.replace(/^(?:0+)([1-9]*)$/, "$1");
+      const newText = text.replace(/^(?:0+)([1-9][0-9]*)$/, "$1");
       if (newText.length === 0) {
         setter(String(defaultValue));
       } else {
@@ -46,11 +46,12 @@ export default function Top({ onConfigChange }) {
     changeTimePerPage();
   }, [pageFrom, pageTo, time])
   return (
-    <View style={styles.container}>
+    <View testID="container-top" style={styles.container}>
       <Text style={styles.time}>I want to read a book</Text>
       <View style={styles.inputRow}>
         <Text style={styles.time}>from page {" "}</Text>
         <TextInput 
+          testID="page-from"
           keyboardType='phone-pad'
           style={styles.textInput}
           value={pageFrom.toString()}
@@ -61,6 +62,7 @@ export default function Top({ onConfigChange }) {
       <View style={styles.inputRow}>
         <Text style={styles.time}>to page {" "}</Text>
         <TextInput 
+          testID="page-to"
           keyboardType='phone-pad'
           style={styles.textInput}
           value={pageTo.toString()}
@@ -71,6 +73,7 @@ export default function Top({ onConfigChange }) {
       <View style={styles.inputRow}>
         <Text style={styles.time}>in {" "}</Text>
         <TextInput 
+          testID="time"
           keyboardType='phone-pad'
           style={styles.textInput}
           value={time.toString()}
@@ -79,11 +82,11 @@ export default function Top({ onConfigChange }) {
         />
         <Text style={styles.time}>{" "} minutes</Text>
       </View>
-      <Text style={styles.time}>
-        so that {" "}
-        <Text style={styles.state}>{Math.round(timePerPage * 10) / 10}</Text>
-        {" "} seconds per pages.
-      </Text>
+      <View style={styles.inputRow}>
+        <Text style={styles.time}>so that {" "}</Text>
+        <Text testID="sec-per-page" style={styles.state}>{Math.round(timePerPage * 10) / 10}</Text>
+        <Text style={styles.time}>{" "} seconds per page.</Text>
+      </View>
     </View>
   );
 }
@@ -115,6 +118,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   state: {
+    textAlign: 'center',
     color: 'white',
     fontSize: 28,
     fontWeight: '200',

@@ -125,73 +125,86 @@ export default function Count({ pageRange, time }) {
 
 
   return (
-    <View style={styles.wrapper}>
-      <TouchableHighlight style={styles.skipButton} onPress={onSkip} underlayColor={"#00e0ff"}>
-        <Text style={styles.textStyle}>Skip</Text>
-      </TouchableHighlight>
-      <TouchableHighlight style={styles.saveButton} onPress={onSave}>
-        <Text style={styles.textStyle}>Save</Text>
-      </TouchableHighlight>
-      <View style={styles.counter}>
-        <Text style={styles.message}>You are reading</Text>
-        <Text style={styles.pageNum}>P. {currentPage}</Text>
-        <AnimatedCircularProgress
-          ref={refCircle.page}
-          size={outerCircleSize - CIRCLE_WIDTH.BOOK * 2}
-          width={CIRCLE_WIDTH.PAGE}
-          fill={100}
-          prefill={100}
-          style={styles.circlePage}
-          tintColor="#00ffe0"
-          backgroundColor="#3d5875" />
-        <AnimatedCircularProgress
-          ref={refCircle.book}
-          size={outerCircleSize}
-          width={CIRCLE_WIDTH.BOOK}
-          fill={100}
-          prefill={100}
-          style={styles.circleBook}
-          tintColor="#00e0ff"
-          backgroundColor="#3d5875" />
+    <View testID="container-count" style={styles.container}>
+      <View style={styles.wrapperSkipButton}>
+        <TouchableHighlight 
+          testID="tap-skip" 
+          style={styles.skipButton} 
+          onPress={onSkip} 
+          underlayColor={"#00e0ff"}
+        >
+          <Text style={styles.textStyle}>Skip</Text>
+        </TouchableHighlight>
       </View>
-      <TouchableOpacity
-        style={styles.tapArea} 
-        onPress={onTapBackground} />
+      <View testID="counter" style={styles.wrapperCounter}>
+        <View style={styles.counter}>
+          <AnimatedCircularProgress
+            ref={refCircle.page}
+            size={outerCircleSize - CIRCLE_WIDTH.BOOK * 2}
+            width={CIRCLE_WIDTH.PAGE}
+            fill={100}
+            prefill={100}
+            style={styles.circlePage}
+            tintColor="#00ffe0"
+            backgroundColor="#3d5875" />
+          <AnimatedCircularProgress
+            ref={refCircle.book}
+            size={outerCircleSize}
+            width={CIRCLE_WIDTH.BOOK}
+            fill={100}
+            prefill={100}
+            style={styles.circleBook}
+            tintColor="#00e0ff"
+            backgroundColor="#3d5875" />
+        </View>
+        <View style={styles.msgReading}>
+          <Text style={styles.message}>You are reading</Text>
+          <Text testID="current-page" style={styles.pageNum}>P. {currentPage}</Text>
+        </View>
+        <TouchableOpacity
+          testID="tap-reading"
+          style={styles.tapArea} 
+          onPress={onTapBackground} />
+      </View>
+      <View style={styles.wrapperSaveButton}>
+        <TouchableHighlight testID="tap-save" style={styles.saveButton} onPress={onSave}>
+          <Text style={styles.textStyle}>Save</Text>
+        </TouchableHighlight>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
+  container: {
     flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  counter: {
-    zIndex: 1,
-    flex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
     backgroundColor: '#152d44',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  message: {
-    textAlign: 'center',
-    color: '#7591af',
-    fontSize: 23,
-    fontWeight: '200',
+  wrapperSkipButton: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  pageNum: {
-    textAlign: 'center',
-    color: '#7591af',
-    fontSize: 50,
-    fontWeight: '100',
+  skipButton: {
+    width: 200,
+    height: 100,
+    backgroundColor: '#3d5875',
+    borderColor: '#00e0ff',
+    borderWidth: 1,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  wrapperCounter: {
+    backgroundColor: '#152d44',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  counter: {
+    width: outerCircleSize,
+    height: outerCircleSize,
   },
   circlePage: {
     position: 'absolute',
@@ -207,45 +220,46 @@ const styles = StyleSheet.create({
     marginTop: -outerCircleSize / 2,
     marginLeft: -outerCircleSize / 2,
   },
+  msgReading: {
+    width: outerCircleSize - (CIRCLE_WIDTH.BOOK + CIRCLE_WIDTH.PAGE) * 2,
+    height: outerCircleSize - (CIRCLE_WIDTH.BOOK + CIRCLE_WIDTH.PAGE) * 2,
+    borderRadius: (outerCircleSize - (CIRCLE_WIDTH.BOOK + CIRCLE_WIDTH.PAGE) * 2) / 2,
+    marginTop: -(outerCircleSize - (CIRCLE_WIDTH.BOOK + CIRCLE_WIDTH.PAGE) * 2) - (CIRCLE_WIDTH.BOOK + CIRCLE_WIDTH.PAGE),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  message: {
+    textAlign: 'center',
+    color: '#7591af',
+    fontSize: 23,
+    fontWeight: '200',
+  },
+  pageNum: {
+    textAlign: 'center',
+    color: '#7591af',
+    fontSize: 50,
+    fontWeight: '100',
+  },
   tapArea: {
-    zIndex: 30,
     backgroundColor: 'white',
-    opacity: 0,
+    opacity: 0.01,
     width: outerCircleSize,
     height: outerCircleSize,
-    borderRadius: outerCircleSize / 2
+    borderRadius: outerCircleSize / 2,
+    marginTop: -(outerCircleSize - (CIRCLE_WIDTH.BOOK + CIRCLE_WIDTH.PAGE) * 2) / 2 - outerCircleSize / 2,
   },
-  skipButton: {
-    zIndex: 10,
-    position: 'absolute',
-    top: 0,
-    left: '50%',
-    width: 200,
-    height: 100,
-    marginTop: 50,
-    marginLeft: -100,
-    backgroundColor: '#3d5875',
-    borderColor: '#00e0ff',
-    borderWidth: 1,
-    borderRadius: 50,
+  wrapperSaveButton: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
   saveButton: {
-    zIndex: 100,
-    position: 'absolute',
-    top: '100%',
-    left: '50%',
     width: 200,
     height: 100,
-    marginTop: -100 - 50,
-    marginLeft: -100,
     backgroundColor: '#3d5875',
     borderColor: '#00e0ff',
     borderWidth: 1,
     borderRadius: 50,
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
