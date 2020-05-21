@@ -2,8 +2,8 @@
   "expo": {
     "name": "速読",
     "slug": "SokudokuAssistant",
+    "description": "一定時間ごとにバイブレーションでページめくりを促す読書強制、および速読修得を目的としたアプリ。",
     "privacy": "public",
-    "sdkVersion": "33.0.0",
     "platforms": [
       "ios",
       "android",
